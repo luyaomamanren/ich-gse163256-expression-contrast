@@ -1,0 +1,18 @@
+{
+  "python": "3.12.13 (main, Mar  3 2026, 15:01:35) [MSC v.1944 64 bit (AMD64)]",
+  "statsmodels": "0.14.6",
+  "n_observations": 136,
+  "n_patients": 20,
+  "n_blood": 80,
+  "n_hematoma": 56,
+  "patients_blood": 20,
+  "patients_hematoma": 19,
+  "days": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ]
+}
