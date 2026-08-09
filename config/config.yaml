@@ -1,0 +1,8 @@
+gse163256_url: "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE163nnn/GSE163256/suppl/GSE163256_monos_log_fpkm_techreps_collapsed.csv.gz"
+gse163256_file: "data/raw/GSE163256_monos_log_fpkm_techreps_collapsed.csv.gz"
+msigdb_url: "https://www.gsea-msigdb.org/gsea/msigdb/download_file.jsp?filePath=/msigdb/release/2025.1.Hs/h.all.v2025.1.Hs.symbols.gmt"
+msigdb_file: "data/raw/h.all.v2025.1.Hs.symbols.gmt"
+msigdb_release: "2025.1.Hs"
+analysis_days: [1, 2, 3, 4, 5, 6]
+primary_compartments: ["blood", "hematoma"]
+
