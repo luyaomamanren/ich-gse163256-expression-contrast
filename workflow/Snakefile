@@ -1,0 +1,57 @@
+configfile: "config/config.yaml"
+
+rule all:
+    input:
+        "results/gse163256_reanalysis_models.csv",
+        "results/signature_sensitivity_models.csv",
+        "results/signature_overlap_2025_1.csv",
+        "figures/Figure_summary_evidence_aligned.pdf",
+        "figures/Figure_summary_evidence_aligned.tiff"
+
+rule download_inputs:
+    output:
+        expr=config["gse163256_file"],
+        gmt=config["msigdb_file"]
+    params:
+        expr_url=config["gse163256_url"],
+        gmt_url=config["msigdb_url"]
+    shell:
+        "python scripts/download_inputs.py --expr-url '{params.expr_url}' --expr-out '{output.expr}' --gmt-url '{params.gmt_url}' --gmt-out '{output.gmt}'"
+
+rule build_scores:
+    input:
+        expr=rules.download_inputs.output.expr,
+        gmt=rules.download_inputs.output.gmt
+    output:
+        locked="results/gse163256_locked_analysis_dataset.csv",
+        sensitivity="results/signature_sensitivity_models.csv",
+        overlap="results/signature_overlap_2025_1.csv",
+        loo_gene="results/signature_leave_one_gene_out.csv",
+        loo_patient="results/signature_leave_one_patient_out_cv.csv",
+        summary="results/signature_sensitivity_summary.json"
+    shell:
+        "python scripts/build_scores.py --expr '{input.expr}' --gmt '{input.gmt}' --outdir results"
+
+rule fit_models:
+    input:
+        rules.build_scores.output.locked
+    output:
+        models="results/gse163256_reanalysis_models.csv",
+        correlations="results/gse163256_unadjusted_correlations.csv",
+        manifest="results/gse163256_patient_compartment_manifest.csv",
+        summary="results/gse163256_reanalysis_summary.json"
+    shell:
+        "python scripts/fit_models.py --dataset '{input}' --outdir results"
+
+rule summary_figure:
+    input:
+        models=rules.fit_models.output.models,
+        sensitivity=rules.build_scores.output.sensitivity
+    output:
+        pdf="figures/Figure_summary_evidence_aligned.pdf",
+        svg="figures/Figure_summary_evidence_aligned.svg",
+        png="figures/Figure_summary_evidence_aligned.png",
+        tiff="figures/Figure_summary_evidence_aligned.tiff"
+    shell:
+        "Rscript scripts/make_summary_figure.R results figures/Figure_summary_evidence_aligned"
+
