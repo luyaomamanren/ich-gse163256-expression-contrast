@@ -1,0 +1,13 @@
+name: ich-expression-contrast
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.12
+  - pandas=3.0.5
+  - numpy=2.5.1
+  - scipy=1.18.0
+  - statsmodels=0.14.6
+  - snakemake-minimal>=9
+  - r-base>=4.4
+
